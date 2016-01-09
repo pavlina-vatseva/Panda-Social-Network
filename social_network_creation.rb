@@ -1,14 +1,16 @@
 class PandaSocialNetwork < Panda
-	attr_accessor 
-	def initialize ()
+	attr_accessor :network
+
+	def initialize (network)
+		@network = network{}
 	end
 
 	def add_panda(panda)
-
+		
 	end
 
 	def has_panda(panda)
-
+		network.has_key?("panda")
 	end
 
 	def make_friends(panda1, panda2)
