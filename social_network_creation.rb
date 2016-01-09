@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 class PandaSocialNetwork
 
 	def initialize
@@ -29,6 +30,33 @@ class PandaSocialNetwork
 	def friends_of(panda)
 		return false unless has_panda(panda)
 		@network[panda]
+=======
+class PandaSocialNetwork < Panda
+	attr_accessor :network
+
+	def initialize (network)
+		@network = network{}
+	end
+
+	def add_panda(panda)
+		
+	end
+
+	def has_panda(panda)
+		network.has_key?("panda")
+	end
+
+	def make_friends(panda1, panda2)
+
+	end
+
+	def are_friends(panda1, panda2)
+
+	end
+
+	def friends_of(panda)
+
+>>>>>>> 3b1052dddcda6d73026aadb4c3e470ba6c6bcf39
 	end
 
 	def connection_level(panda1, panda2)
@@ -43,6 +71,7 @@ class PandaSocialNetwork
 
 	end
 
+<<<<<<< HEAD
 	require "Set"
 
 	private
@@ -63,5 +92,7 @@ class PandaSocialNetwork
 			end
 		end
 	end
+=======
+>>>>>>> 3b1052dddcda6d73026aadb4c3e470ba6c6bcf39
 
 end
