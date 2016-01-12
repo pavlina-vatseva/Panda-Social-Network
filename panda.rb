@@ -81,13 +81,6 @@ class PandaSocialNetwork
 		connection_level(panda1, panda2) == -1 ? false : true
 	end
 
-	def how_many_gender_in_network(level, panda, gender)
-
-	end
-
-	#require 'Set'
-
-	#private
 	def bfs(start, wanted)
 		q = Queue.new
 		visited = []
