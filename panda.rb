@@ -38,7 +38,7 @@ class PandaSocialNetwork
   	attr_accessor :network
 	
 	def initialize
-		@network = {}
+		@network = Hash.new([])
 	end
 
 	def add_panda(panda)
@@ -60,25 +60,23 @@ class PandaSocialNetwork
 	end
 
 	def are_friends(panda1, panda2)
-		network[panda1].has_value?(panda2)
+		network[panda1].include?(panda2)
 	end
 
 	def friends_of(panda)
 		return false unless has_panda(panda)
 		network[panda]
 	end
-
+ 
 	def connection_level(panda1, panda2)
 		return false unless has_panda(panda1) and has_panda(panda2)
-		levels = bfs(panda2a1, panda2)
+		levels = bfs(panda1, panda2)
 
 		levels
 	end
 
 	def are_connected(panda1, panda2)
 		return false unless connection_level(panda1, panda2)
-
-		connection_level(panda1, panda2) == -1 ? false : true
 	end
 
 	def bfs(start, wanted)
@@ -100,20 +98,20 @@ class PandaSocialNetwork
 		end
 		-1
 	end
-  def bfs_gender(start, search_level, gender)
+  def bfs_gender(search_level, start, gender)
     q = Queue.new
-    visited, result = [], 0
-    q << [0, start_panda]
-    visited << start_panda
+    	visited, result = [], 0	
+    q << [0, start]
+    visited << start
 
     until q.empty?
       level, current = q.pop
-      result += 1 if level == search_level and gender == current.gender
+      result += 1 if level <= search_level and gender == current.gender
 
       un = network[current].select { |v| !visited.include? v }
       un.each do |v|
         visited << v
-        q << [level + 1, v]
+        q << [level  + 1, v]
       end
     end
 
@@ -121,7 +119,7 @@ class PandaSocialNetwork
   end
 
   def how_many_gender_in_network(level, panda, gender)
-    bfs_gender(panda, level, gender)
+    bfs_gender(level, panda, gender)
   end
 
 
