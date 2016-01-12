@@ -43,7 +43,7 @@ class PandaSocialNetwork
 
 	def add_panda(panda)
 		raise "PandaAlreadyThere" if has_panda(panda)
-		network[panda] = panda
+		network[panda] = []
 	end
 
 	def has_panda(panda)
