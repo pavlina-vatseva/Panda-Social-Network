@@ -1,17 +1,12 @@
 class Panda
 
-	attr_accessor :name, :email, :gender :friends
+	attr_accessor :name, :email, :gender
 
-	def initialize(name, email, genders)
-		@names = name 
+	def initialize(name, email, gender)
+		@name = name 
 		@email = email
-		@friends = friends[]
 		@gender = gender
 	end
-
-	def to_s
-		"#{@names}, #{@email}, #{@gender}" #to be edited 
-	end 
 
 	def male?
 		gender == "male"
@@ -21,53 +16,120 @@ class Panda
 		gender == "female"
 	end
 
-	def equal?(other)
-		name == other.name && email == other.email && gender == other.gender
+	def ==(other)
+		to_s == other.to_s && hash == other.hash
 	end	
+
+	def to_s
+		"#{@name}, #{@email}, #{@gender}"
+	end 
 
 	def hash
 		to_s.hash
 	end
 
-end
+	alias_method :eql?, :==
+end	
 
-class PandaSocialNetwork < Panda
-	attr_accessor 
-	def initialize ()
+class PandaSocialNetwork
 
+	#require "Set"
+
+  	attr_accessor :network
+	
+	def initialize
+		@network = {}
 	end
 
 	def add_panda(panda)
-			
+		raise "PandaAlreadyThere" if has_panda(panda)
+		network[panda] = panda
 	end
 
 	def has_panda(panda)
-
+		network.has_key?(panda)
 	end
 
 	def make_friends(panda1, panda2)
+		raise "PandasAlreadyFriends" if are_friends(panda1, panda2)
+		add_panda(panda1) unless has_panda(panda1)
+		add_panda(panda2) unless has_panda(panda2)
 
+		network[panda1] << panda2
+		network[panda2] << panda1
 	end
 
 	def are_friends(panda1, panda2)
-
+		network[panda1].has_value?(panda2)
 	end
 
 	def friends_of(panda)
-
+		return false unless has_panda(panda)
+		network[panda]
 	end
 
 	def connection_level(panda1, panda2)
+		return false unless has_panda(panda1) and has_panda(panda2)
+		levels = bfs(panda2a1, panda2)
 
+		levels
 	end
 
 	def are_connected(panda1, panda2)
+		return false unless connection_level(panda1, panda2)
 
+		connection_level(panda1, panda2) == -1 ? false : true
 	end
 
 	def how_many_gender_in_network(level, panda, gender)
 
 	end
+
+	#require 'Set'
+
+	#private
+	def bfs(start, wanted)
+		q = Queue.new
+		visited = []
+		q << [0, start]
+		visited << start
+		
+		until q.empty?
+			level, current = q.pop
+			return level if wanted == current
+		
+			unique_neighbours = network[current].select { |v| !visited.member? v }
+			unique_neighbours.each do |v|
+				visited << v
+				q << [level+1, v]
+			# пътят до v минава през current	path[v] = current
+			end
+		end
+		-1
+	end
+  def bfs_gender(start, search_level, gender)
+    q = Queue.new
+    visited, result = [], 0
+    q << [0, start_panda]
+    visited << start_panda
+
+    until q.empty?
+      level, current = q.pop
+      result += 1 if level == search_level and gender == current.gender
+
+      un = network[current].select { |v| !visited.include? v }
+      un.each do |v|
+        visited << v
+        q << [level + 1, v]
+      end
+    end
+
+    result
+  end
+
+  def how_many_gender_in_network(level, panda, gender)
+    bfs_gender(panda, level, gender)
+  end
 
 
 end
